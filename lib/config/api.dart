@@ -5,6 +5,8 @@ import 'package:arduino_garden/models/schedule.dart';
 import 'package:arduino_garden/models/user.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/gardenHistory.dart';
+
 class ArduinoGardenApi {
   final Uri host;
   const ArduinoGardenApi(this.host);
@@ -163,5 +165,40 @@ class ArduinoGardenApi {
       throw Exception(result["message"]);
     }
     print(result);
+  }
+
+  Future<List<GardenHistory>> getGardenHistory(
+      String token, String gardenId) async {
+    final data = await http.get(
+      uriFor('/api/garden/getGardenHistory/' + gardenId),
+      headers: {
+        "x-auth-token": token,
+        "Content-Type": "application/json",
+      },
+    );
+    final result = jsonDecode(data.body);
+    if (result['error']) {
+      throw Exception(result['message']);
+    }
+    return (result["message"] as List<dynamic>)
+        .map((e) => GardenHistory.fromJson(e))
+        .toList();
+  }
+
+  Future<GardenHistory> saveGardenHistoryData(
+      String token, String gardenId) async {
+    final data = await http.get(
+      uriFor('/api/garden/saveGardenHistoryData/' + gardenId),
+      headers: {
+        "x-auth-token": token,
+        "Content-Type": "application/json",
+      },
+    );
+    final result = jsonDecode(data.body);
+    print(result);
+    if (result['error']) {
+      throw Exception(result['message']);
+    }
+    return GardenHistory.fromJson(result["message"]);
   }
 }

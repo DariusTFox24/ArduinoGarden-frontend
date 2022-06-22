@@ -99,34 +99,34 @@ class _ListGardensState extends State<ListGardens> {
                                     )),
                                 color: Colors.pink,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
-                                child: MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(12.0)),
-                                  onPressed: () async {
-                                    Navigator.of(context).pop();
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return EditGarden(
-                                            garden: Provider.of<StateHandler>(
-                                                    context,
-                                                    listen: false)
-                                                .gardens[index],
-                                          );
-                                        });
-                                  },
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  color: Colors.pink,
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 4.0),
+                              //   child: MaterialButton(
+                              //     shape: RoundedRectangleBorder(
+                              //         borderRadius:
+                              //             BorderRadius.circular(12.0)),
+                              //     onPressed: () async {
+                              //       Navigator.of(context).pop();
+                              //       showDialog(
+                              //           context: context,
+                              //           builder: (context) {
+                              //             return EditGarden(
+                              //               garden: Provider.of<StateHandler>(
+                              //                       context,
+                              //                       listen: false)
+                              //                   .gardens[index],
+                              //             );
+                              //           });
+                              //     },
+                              //     child: Text(
+                              //       'Edit',
+                              //       style: TextStyle(
+                              //         color: Colors.white,
+                              //       ),
+                              //     ),
+                              //     color: Colors.pink,
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 4.0),
                                 child: MaterialButton(

@@ -274,6 +274,23 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
                 child: Container(
                   child: Stack(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 32.0),
+                        child: MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0)),
+                          onPressed: () async {
+                            saveGardenHistoryDataNew();
+                          },
+                          child: Icon(
+                            Icons.save_outlined,
+                            color: Colors.pink,
+                            size: 96,
+                          ),
+                          color: Colors.transparent,
+                          elevation: 0,
+                        ),
+                      ),
                       Image.asset(
                         "assets/base.png",
                         alignment: Alignment.center,
@@ -753,6 +770,13 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
     setState(() {
       lightsState = newVal;
     });
+  }
+
+  void saveGardenHistoryDataNew() {
+    api.saveGardenHistoryData(
+      Provider.of<StateHandler>(context, listen: false).token!,
+      Provider.of<StateHandler>(context, listen: false).currentGarden!.id,
+    );
   }
 
   void changeRgbStatus(bool newVal) {

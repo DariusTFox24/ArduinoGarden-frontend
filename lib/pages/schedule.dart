@@ -53,7 +53,7 @@ class _SchedulePageState extends State<SchedulePage> {
     if (currentGarden!.schedule != null) {
       scheduleName = currentGarden!.schedule!.scheduleName;
       durationLights = int.parse(currentGarden!.schedule!.durationLights);
-      durationPump = int.parse(currentGarden!.schedule!.durationPump);
+      durationPump = int.parse(currentGarden!.schedule!.durationPump) - 3;
       _weekdaysPump = [
         currentGarden!.schedule!.weekdaysPump.monday,
         currentGarden!.schedule!.weekdaysPump.tuesday,

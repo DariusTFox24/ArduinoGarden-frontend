@@ -73,7 +73,6 @@ class _ListSchedulesState extends State<ListSchedules> {
                           Row(
                             children: [
                               if (true) ...{
-                                //TODO: MAKE IF SCHEDULE IS DELETABLE
                                 Padding(
                                   padding: const EdgeInsets.only(left: 4.0),
                                   child: MaterialButton(
@@ -93,29 +92,29 @@ class _ListSchedulesState extends State<ListSchedules> {
                                   ),
                                 ),
                               },
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
-                                child: MaterialButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(12.0)),
-                                  onPressed: () async {
-                                    Navigator.of(context).pop();
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return const ScheduleEdit();
-                                        });
-                                  },
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  color: Colors.pink,
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 4.0),
+                              //   child: MaterialButton(
+                              //     shape: RoundedRectangleBorder(
+                              //         borderRadius:
+                              //             BorderRadius.circular(12.0)),
+                              //     onPressed: () async {
+                              //       Navigator.of(context).pop();
+                              //       showDialog(
+                              //           context: context,
+                              //           builder: (context) {
+                              //             return const ScheduleEdit();
+                              //           });
+                              //     },
+                              //     child: Text(
+                              //       'Edit',
+                              //       style: TextStyle(
+                              //         color: Colors.white,
+                              //       ),
+                              //     ),
+                              //     color: Colors.pink,
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 4.0),
                                 child: MaterialButton(
@@ -138,7 +137,6 @@ class _ListSchedulesState extends State<ListSchedules> {
                                         .updateAll();
 
                                     Navigator.of(context).pop(true);
-                                    //TODO: make the button open "custom_schedule_setup" with current settings and on save replace this schedule with the new one
                                   },
                                   child: Text(
                                     'Select',

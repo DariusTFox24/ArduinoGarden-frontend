@@ -555,7 +555,8 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                             "saturday": _weekdaysLight[5],
                             "sunday": _weekdaysLight[6]
                           },
-                          "durationPump": durationPump.text,
+                          "durationPump":
+                              (int.parse(durationPump.text) + 3).toString(),
                           "durationLights": durationLights.text,
                           "scheduleName": scheduleName.text,
                           "timePump": timePump.to24hours(),
@@ -567,7 +568,6 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                         .updateUser();
 
                     Navigator.of(context).pop();
-                    //TODO: CREATE SCHEDULE
                   },
                 ),
               ),

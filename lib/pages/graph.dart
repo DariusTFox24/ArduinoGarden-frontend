@@ -1,6 +1,10 @@
 import 'package:arduino_garden/widgets/grid_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../config/config.dart';
+import '../config/state_handler.dart';
 
 class GraphPage extends StatefulWidget {
   const GraphPage({Key? key}) : super(key: key);
@@ -10,21 +14,21 @@ class GraphPage extends StatefulWidget {
 }
 
 ///JSUT DEMO FOR GRAPHS DELETUS AFTER
-class GraphDataDemo {
-  GraphDataDemo(this.time, this.value);
+class GraphData {
+  GraphData(this.time, this.value);
   final double time;
   final double value;
 }
 
-List<GraphDataDemo> getGraphDataDemo() {
-  final List<GraphDataDemo> chartData = [
-    GraphDataDemo(10, 18.5),
-    GraphDataDemo(11, 20.2),
-    GraphDataDemo(12, 21.5),
-    GraphDataDemo(13, 23.1),
-    GraphDataDemo(14, 24.2),
-    GraphDataDemo(15, 23.6),
-    GraphDataDemo(16, 24.7)
+List<GraphData> getGraphDataToCharts() {
+  final List<GraphData> chartData = [
+    GraphData(10, 18.5),
+    GraphData(11, 20.2),
+    GraphData(12, 21.5),
+    GraphData(13, 23.1),
+    GraphData(14, 24.2),
+    GraphData(15, 23.6),
+    GraphData(16, 24.7)
   ];
 
   //TODO: make charts show only last 7 recorded values, swipe right on card
@@ -34,12 +38,12 @@ List<GraphDataDemo> getGraphDataDemo() {
 }
 
 class _GraphPageState extends State<GraphPage> {
-  late List<GraphDataDemo> _chartData;
+  late List<GraphData> _chartData;
   late TooltipBehavior _tooltipBehavior;
 
   @override
   void initState() {
-    _chartData = getGraphDataDemo();
+    _chartData = getGraphDataToCharts();
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
@@ -70,12 +74,12 @@ class _GraphPageState extends State<GraphPage> {
                       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
                   primaryYAxis: NumericAxis(labelFormat: '{value}°C'),
                   series: <ChartSeries>[
-                    LineSeries<GraphDataDemo, double>(
+                    LineSeries<GraphData, double>(
                       name: 'Temperature History',
                       enableTooltip: true,
                       dataSource: _chartData,
-                      xValueMapper: (GraphDataDemo graph, _) => graph.time,
-                      yValueMapper: (GraphDataDemo graph, _) => graph.value,
+                      xValueMapper: (GraphData graph, _) => graph.time,
+                      yValueMapper: (GraphData graph, _) => graph.value,
                       dataLabelSettings: DataLabelSettings(isVisible: true),
                     )
                   ],
@@ -93,12 +97,12 @@ class _GraphPageState extends State<GraphPage> {
                       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
                   primaryYAxis: NumericAxis(labelFormat: '{value}°C'),
                   series: <ChartSeries>[
-                    LineSeries<GraphDataDemo, double>(
+                    LineSeries<GraphData, double>(
                       name: 'Humidity History',
                       enableTooltip: true,
                       dataSource: _chartData,
-                      xValueMapper: (GraphDataDemo graph, _) => graph.time,
-                      yValueMapper: (GraphDataDemo graph, _) => graph.value,
+                      xValueMapper: (GraphData graph, _) => graph.time,
+                      yValueMapper: (GraphData graph, _) => graph.value,
                       dataLabelSettings: DataLabelSettings(isVisible: true),
                     )
                   ],
@@ -116,12 +120,12 @@ class _GraphPageState extends State<GraphPage> {
                       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
                   primaryYAxis: NumericAxis(labelFormat: '{value}°C'),
                   series: <ChartSeries>[
-                    LineSeries<GraphDataDemo, double>(
+                    LineSeries<GraphData, double>(
                       name: 'Light Intensity History',
                       enableTooltip: true,
                       dataSource: _chartData,
-                      xValueMapper: (GraphDataDemo graph, _) => graph.time,
-                      yValueMapper: (GraphDataDemo graph, _) => graph.value,
+                      xValueMapper: (GraphData graph, _) => graph.time,
+                      yValueMapper: (GraphData graph, _) => graph.value,
                       dataLabelSettings: DataLabelSettings(isVisible: true),
                     )
                   ],
@@ -139,12 +143,12 @@ class _GraphPageState extends State<GraphPage> {
                       NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
                   primaryYAxis: NumericAxis(labelFormat: '{value}°C'),
                   series: <ChartSeries>[
-                    LineSeries<GraphDataDemo, double>(
+                    LineSeries<GraphData, double>(
                       name: 'Solar Power History',
                       enableTooltip: true,
                       dataSource: _chartData,
-                      xValueMapper: (GraphDataDemo graph, _) => graph.time,
-                      yValueMapper: (GraphDataDemo graph, _) => graph.value,
+                      xValueMapper: (GraphData graph, _) => graph.time,
+                      yValueMapper: (GraphData graph, _) => graph.value,
                       dataLabelSettings: DataLabelSettings(isVisible: true),
                     )
                   ],

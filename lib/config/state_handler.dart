@@ -1,5 +1,6 @@
 import 'package:arduino_garden/config/config.dart';
 import 'package:arduino_garden/models/garden.dart';
+import 'package:arduino_garden/models/gardenHistory.dart';
 import 'package:arduino_garden/models/schedule.dart';
 import 'package:arduino_garden/models/user.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class StateHandler extends ChangeNotifier {
   User? userInfo;
   List<Garden> gardens = [];
   List<Schedule> schedules = [];
+  List<GardenHistory> gardenHistory = [];
 
   static Future<StateHandler> fetchToken() async {
     final handler = StateHandler();
@@ -40,6 +42,11 @@ class StateHandler extends ChangeNotifier {
 
   Future<void> setCurrentGarden(Garden grdn) async {
     currentGarden = grdn;
+    notifyListeners();
+  }
+
+  Future<void> setGardenHistory(List<GardenHistory> grdnhis) async {
+    gardenHistory = grdnhis;
     notifyListeners();
   }
 
@@ -89,6 +96,18 @@ class StateHandler extends ChangeNotifier {
 
   Future<void> updateSchedules() async {
     schedules = await api.getSchedules(token!);
+    notifyListeners();
+  }
+
+  Future<void> updateGardenHistory() async {
+    gardenHistory = await api.getGardenHistory(token!, currentGarden!.id);
+    notifyListeners();
+  }
+
+  Future<void> saveGardenHistory() async {
+    GardenHistory newGardenHistoryData =
+        await api.saveGardenHistoryData(token!, currentGarden!.id);
+    gardenHistory.add(newGardenHistoryData);
     notifyListeners();
   }
 
