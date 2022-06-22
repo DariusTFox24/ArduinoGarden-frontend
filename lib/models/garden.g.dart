@@ -10,7 +10,6 @@ Garden _$GardenFromJson(Map<String, dynamic> json) => Garden(
       id: json['_id'] as String,
       name: json['name'] as String,
       pump: json['pump'] as bool,
-      sunFollow: json['sunFollow'] as bool,
       lights: json['lights'] as bool,
       rgb: RGB.fromJson(json['RGB'] as Map<String, dynamic>),
       temperature: (json['temperature'] as num).toDouble(),
@@ -29,7 +28,6 @@ Map<String, dynamic> _$GardenToJson(Garden instance) => <String, dynamic>{
       '_id': instance.id,
       'name': instance.name,
       'pump': instance.pump,
-      'sunFollow': instance.sunFollow,
       'lights': instance.lights,
       'RGB': instance.rgb,
       'temperature': instance.temperature,
@@ -40,6 +38,7 @@ Map<String, dynamic> _$GardenToJson(Garden instance) => <String, dynamic>{
       'schedule': instance.schedule,
       'gardenToken': instance.gardenToken,
       'lastOnline': instance.lastOnline.toIso8601String(),
+      'lastSaved': instance.lastSaved,
     };
 
 RGB _$RGBFromJson(Map<String, dynamic> json) => RGB(
