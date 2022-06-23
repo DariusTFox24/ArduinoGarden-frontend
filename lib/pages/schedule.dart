@@ -41,6 +41,7 @@ class _SchedulePageState extends State<SchedulePage> {
     true, //Sat
     true //Sun
   ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,7 +54,7 @@ class _SchedulePageState extends State<SchedulePage> {
     if (currentGarden!.schedule != null) {
       scheduleName = currentGarden!.schedule!.scheduleName;
       durationLights = int.parse(currentGarden!.schedule!.durationLights);
-      durationPump = int.parse(currentGarden!.schedule!.durationPump) - 3;
+      durationPump = int.parse(currentGarden!.schedule!.durationPump);
       _weekdaysPump = [
         currentGarden!.schedule!.weekdaysPump.monday,
         currentGarden!.schedule!.weekdaysPump.tuesday,
@@ -638,7 +639,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 6.0),
                                 child: Text(
-                                  (durationPump >= (60 * 60))
+                                  (durationPump >= (60 * 24))
                                       ? "${(durationPump / 60 / 60).toStringAsFixed(2)}"
                                       : (durationPump >= 60)
                                           ? "${(durationPump / 60).toStringAsFixed(2)}"
@@ -654,10 +655,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                 padding: const EdgeInsets.only(top: 6.0),
                                 child: Text(
                                   (durationPump >= (60 * 60))
-                                      ? " hours."
+                                      ? " days."
                                       : (durationPump >= 60)
-                                          ? " minutes."
-                                          : " seconds.",
+                                          ? " hours."
+                                          : " minutes.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 18),
                                 ),

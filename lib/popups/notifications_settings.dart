@@ -14,9 +14,7 @@ class _NotificationsSettingsState extends State<NotificationsSettings> {
   bool whenDeviceGoesOnline = true;
   bool whenDeviceGoesOffline = true;
 
-  bool sendNotificationsBattery = true;
-  RangeValues batteryThresholds = RangeValues(20, 80); //%
-
+  bool sendNotificationsSensors = true;
   bool sendNotificationsTemp = true;
   RangeValues tempThresholds = RangeValues(0, 30); //C
 
@@ -187,13 +185,13 @@ class _NotificationsSettingsState extends State<NotificationsSettings> {
                         color: Colors.pink,
                       ),
                       Row(
-                        //BATTERY ALERTS TOGGLE
+                        //DEVICE CONNECTION ALERTS TOGGLE
                         children: [
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                             child: Text(
-                              "Battery Alerts:",
+                              "Sensor Alerts:",
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
@@ -201,10 +199,10 @@ class _NotificationsSettingsState extends State<NotificationsSettings> {
                             ),
                           ),
                           Switch(
-                            value: sendNotificationsBattery,
+                            value: sendNotificationsSensors,
                             onChanged: (value) {
                               setState(() {
-                                sendNotificationsBattery = value;
+                                sendNotificationsSensors = value;
                               });
                             },
                             activeTrackColor: Colors.lightGreenAccent,
@@ -212,259 +210,243 @@ class _NotificationsSettingsState extends State<NotificationsSettings> {
                           ),
                         ],
                       ),
-                      if (sendNotificationsBattery) ...{
-                        //BATTERY ALERTS RANGE
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
-                          child: Text(
-                            "When outside of range:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
+                      if (sendNotificationsSensors) ...{
+                        Row(
+                          //TEMPERATUE ALERTS TOGGLE
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  left: 8.0,
+                                  right: 8.0),
+                              child: Text(
+                                "Temperature Alerts:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
-                          ),
+                            Switch(
+                              value: sendNotificationsTemp,
+                              onChanged: (value) {
+                                setState(() {
+                                  sendNotificationsTemp = value;
+                                });
+                              },
+                              activeTrackColor: Colors.lightGreenAccent,
+                              activeColor: Colors.green,
+                            ),
+                          ],
                         ),
-                        RangeSlider(
-                          values: batteryThresholds,
-                          onChanged: (RangeValues newRange) {
-                            setState(() => batteryThresholds = newRange);
-                          },
-                          min: 0,
-                          max: 100,
-                          divisions: 10,
-                          labels: RangeLabels(
-                              '${batteryThresholds.start.round()}%',
-                              '${batteryThresholds.end.round()}%'),
-                        ),
-                      },
-                      Divider(
-                        color: Colors.pink,
-                      ),
-                      Row(
-                        //TEMPERATUE ALERTS TOGGLE
-                        children: [
+                        if (sendNotificationsTemp) ...{
+                          //TEMPERATURE ALERTS RANGE
+
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                             child: Text(
-                              "Temperature Alerts:",
+                              "When outside of range:",
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
                               ),
                             ),
                           ),
-                          Switch(
-                            value: sendNotificationsTemp,
-                            onChanged: (value) {
-                              setState(() {
-                                sendNotificationsTemp = value;
-                              });
+                          RangeSlider(
+                            values: tempThresholds,
+                            onChanged: (RangeValues newRange) {
+                              setState(() => tempThresholds = newRange);
                             },
-                            activeTrackColor: Colors.lightGreenAccent,
-                            activeColor: Colors.green,
+                            min: -25,
+                            max: 75,
+                            divisions: 20,
+                            labels: RangeLabels(
+                                '${tempThresholds.start.round()}°C',
+                                '${tempThresholds.end.round()}°C'),
                           ),
-                        ],
-                      ),
-                      if (sendNotificationsTemp) ...{
-                        //TEMPERATURE ALERTS RANGE
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
-                          child: Text(
-                            "When outside of range:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
+                        },
+                        Divider(
+                          color: Colors.pink,
+                        ),
+                        Row(
+                          //HUMIDITY ALERTS TOGGLE
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  left: 8.0,
+                                  right: 8.0),
+                              child: Text(
+                                "Humidity Alerts:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
-                          ),
+                            Switch(
+                              value: sendNotificationsHumidity,
+                              onChanged: (value) {
+                                setState(() {
+                                  sendNotificationsHumidity = value;
+                                });
+                              },
+                              activeTrackColor: Colors.lightGreenAccent,
+                              activeColor: Colors.green,
+                            ),
+                          ],
                         ),
-                        RangeSlider(
-                          values: tempThresholds,
-                          onChanged: (RangeValues newRange) {
-                            setState(() => tempThresholds = newRange);
-                          },
-                          min: -25,
-                          max: 75,
-                          divisions: 20,
-                          labels: RangeLabels(
-                              '${tempThresholds.start.round()}°C',
-                              '${tempThresholds.end.round()}°C'),
-                        ),
-                      },
-                      Divider(
-                        color: Colors.pink,
-                      ),
-                      Row(
-                        //HUMIDITY ALERTS TOGGLE
-                        children: [
+                        if (sendNotificationsHumidity) ...{
+                          //HUMIDITY ALERTS RANGE
+
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                             child: Text(
-                              "Humidity Alerts:",
+                              "When outside of range:",
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
                               ),
                             ),
                           ),
-                          Switch(
-                            value: sendNotificationsHumidity,
-                            onChanged: (value) {
-                              setState(() {
-                                sendNotificationsHumidity = value;
-                              });
+                          RangeSlider(
+                            values: humidityThresholds,
+                            onChanged: (RangeValues newRange) {
+                              setState(() => humidityThresholds = newRange);
                             },
-                            activeTrackColor: Colors.lightGreenAccent,
-                            activeColor: Colors.green,
+                            min: 0,
+                            max: 100,
+                            divisions: 20,
+                            labels: RangeLabels(
+                                '${humidityThresholds.start.round()}%',
+                                '${humidityThresholds.end.round()}%'),
                           ),
-                        ],
-                      ),
-                      if (sendNotificationsHumidity) ...{
-                        //HUMIDITY ALERTS RANGE
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
-                          child: Text(
-                            "When outside of range:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
+                        },
+                        Divider(
+                          color: Colors.pink,
+                        ),
+                        Row(
+                          //LIGHT ALERTS TOGGLE
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  left: 8.0,
+                                  right: 8.0),
+                              child: Text(
+                                "Light Intensity Alerts:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
-                          ),
+                            Switch(
+                              value: sendNotificationsLightInt,
+                              onChanged: (value) {
+                                setState(() {
+                                  sendNotificationsLightInt = value;
+                                });
+                              },
+                              activeTrackColor: Colors.lightGreenAccent,
+                              activeColor: Colors.green,
+                            ),
+                          ],
                         ),
-                        RangeSlider(
-                          values: humidityThresholds,
-                          onChanged: (RangeValues newRange) {
-                            setState(() => humidityThresholds = newRange);
-                          },
-                          min: 0,
-                          max: 100,
-                          divisions: 20,
-                          labels: RangeLabels(
-                              '${humidityThresholds.start.round()}%',
-                              '${humidityThresholds.end.round()}%'),
-                        ),
-                      },
-                      Divider(
-                        color: Colors.pink,
-                      ),
-                      Row(
-                        //LIGHT ALERTS TOGGLE
-                        children: [
+                        if (sendNotificationsLightInt) ...{
+                          //LIGHT ALERTS RANGE
+
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                             child: Text(
-                              "Light Intensity Alerts:",
+                              "When outside of range:",
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
                               ),
                             ),
                           ),
-                          Switch(
-                            value: sendNotificationsLightInt,
-                            onChanged: (value) {
-                              setState(() {
-                                sendNotificationsLightInt = value;
-                              });
+                          RangeSlider(
+                            values: lightThresholds,
+                            onChanged: (RangeValues newRange) {
+                              setState(() => lightThresholds = newRange);
                             },
-                            activeTrackColor: Colors.lightGreenAccent,
-                            activeColor: Colors.green,
+                            min: 0,
+                            max: 100,
+                            divisions: 20,
+                            labels: RangeLabels(
+                                '${lightThresholds.start.round()}%',
+                                '${lightThresholds.end.round()}%'),
                           ),
-                        ],
-                      ),
-                      if (sendNotificationsLightInt) ...{
-                        //LIGHT ALERTS RANGE
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
-                          child: Text(
-                            "When outside of range:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
+                        },
+                        Divider(
+                          color: Colors.pink,
+                        ),
+                        Row(
+                          //SOLAR ALERTS TOGGLE
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  left: 8.0,
+                                  right: 8.0),
+                              child: Text(
+                                "Solar Voltage Alerts:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
-                          ),
+                            Switch(
+                              value: sendNotificationsSolar,
+                              onChanged: (value) {
+                                setState(() {
+                                  sendNotificationsSolar = value;
+                                });
+                              },
+                              activeTrackColor: Colors.lightGreenAccent,
+                              activeColor: Colors.green,
+                            ),
+                          ],
                         ),
-                        RangeSlider(
-                          values: lightThresholds,
-                          onChanged: (RangeValues newRange) {
-                            setState(() => lightThresholds = newRange);
-                          },
-                          min: 0,
-                          max: 100,
-                          divisions: 20,
-                          labels: RangeLabels(
-                              '${lightThresholds.start.round()}%',
-                              '${lightThresholds.end.round()}%'),
-                        ),
-                      },
-                      Divider(
-                        color: Colors.pink,
-                      ),
-                      Row(
-                        //SOLAR ALERTS TOGGLE
-                        children: [
+                        if (sendNotificationsSolar) ...{
+                          //SOLAR ALERTS RANGE
+
                           Padding(
                             padding: EdgeInsets.only(
                                 top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                             child: Text(
-                              "Solar Voltage Alerts:",
+                              "When outside of range:",
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18,
                               ),
                             ),
                           ),
-                          Switch(
-                            value: sendNotificationsSolar,
-                            onChanged: (value) {
-                              setState(() {
-                                sendNotificationsSolar = value;
-                              });
+                          RangeSlider(
+                            values: solarThresholds,
+                            onChanged: (RangeValues newRange) {
+                              setState(() => solarThresholds = newRange);
                             },
-                            activeTrackColor: Colors.lightGreenAccent,
-                            activeColor: Colors.green,
+                            min: 0,
+                            max: 10,
+                            divisions: 20,
+                            labels: RangeLabels('${solarThresholds.start}V',
+                                '${solarThresholds.end}V'),
                           ),
-                        ],
-                      ),
-                      if (sendNotificationsSolar) ...{
-                        //SOLAR ALERTS RANGE
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
-                          child: Text(
-                            "When outside of range:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        RangeSlider(
-                          values: solarThresholds,
-                          onChanged: (RangeValues newRange) {
-                            setState(() => solarThresholds = newRange);
-                          },
-                          min: 0,
-                          max: 10,
-                          divisions: 20,
-                          labels: RangeLabels('${solarThresholds.start}V',
-                              '${solarThresholds.end}V'),
+                        },
+                        Divider(
+                          color: Colors.pink,
                         ),
                       },
-                      Divider(
-                        color: Colors.pink,
-                      ),
                     } else ...{
                       Center(
                         child: Padding(

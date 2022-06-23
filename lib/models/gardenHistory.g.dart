@@ -9,13 +9,13 @@ part of 'gardenHistory.dart';
 GardenHistory _$GardenHistoryFromJson(Map<String, dynamic> json) =>
     GardenHistory(
       gardenId: json['_id'] as String,
-      dateAndTime: json['dateAndTime'] as DateTime,
-      gardenData: json['gardenData'] as Garden,
+      dateAndTime: DateTime.parse(json['dateAndTime'] as String),
+      gardenData: Garden.fromJson(json['gardenData'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$GardenHistoryToJson(GardenHistory instance) =>
     <String, dynamic>{
       '_id': instance.gardenId,
-      'dateAndTime': instance.dateAndTime,
+      'dateAndTime': instance.dateAndTime.toIso8601String(),
       'gardenData': instance.gardenData,
     };

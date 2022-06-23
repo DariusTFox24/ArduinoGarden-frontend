@@ -6,6 +6,7 @@ part 'schedule.g.dart';
 class Schedule {
   @JsonKey(name: '_id')
   final String id;
+  final bool scheduleActive;
   final String timePump;
   final String timeLights;
   final String scheduleName;
@@ -16,6 +17,7 @@ class Schedule {
 
   Schedule({
     required this.id,
+    required this.scheduleActive,
     required this.timePump,
     required this.timeLights,
     required this.scheduleName,

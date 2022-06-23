@@ -22,6 +22,9 @@ Garden _$GardenFromJson(Map<String, dynamic> json) => Garden(
           : Schedule.fromJson(json['schedule'] as Map<String, dynamic>),
       gardenToken: json['gardenToken'] as String,
       lastOnline: DateTime.parse(json['lastOnline'] as String),
+      lastSaved: json['lastSaved'] == null
+          ? null
+          : DateTime.parse(json['lastSaved'] as String),
     );
 
 Map<String, dynamic> _$GardenToJson(Garden instance) => <String, dynamic>{
@@ -38,7 +41,7 @@ Map<String, dynamic> _$GardenToJson(Garden instance) => <String, dynamic>{
       'schedule': instance.schedule,
       'gardenToken': instance.gardenToken,
       'lastOnline': instance.lastOnline.toIso8601String(),
-      'lastSaved': instance.lastSaved,
+      'lastSaved': instance.lastSaved?.toIso8601String(),
     };
 
 RGB _$RGBFromJson(Map<String, dynamic> json) => RGB(

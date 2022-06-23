@@ -27,7 +27,6 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
   late StreamController<int> humidityStreamController;
   late StreamController<int> lightIntensityStreamController;
   late StreamController<bool> pumpStreamController;
-  late StreamController<double> batteryVoltageStreamController;
   late StreamController<double> solarVoltageStreamController;
   late Stream<double> tempStream;
   late Stream<int> humidityStream;
@@ -274,23 +273,6 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
                 child: Container(
                   child: Stack(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 32.0),
-                        child: MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0)),
-                          onPressed: () async {
-                            saveGardenHistoryDataNew();
-                          },
-                          child: Icon(
-                            Icons.save_outlined,
-                            color: Colors.pink,
-                            size: 96,
-                          ),
-                          color: Colors.transparent,
-                          elevation: 0,
-                        ),
-                      ),
                       Image.asset(
                         "assets/base.png",
                         alignment: Alignment.center,
@@ -753,7 +735,6 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
   }
 
   void changePump(bool newVal) {
-    //TODO: FIX THIS
     api.userUpdateData(
         Provider.of<StateHandler>(context, listen: false).token!,
         Provider.of<StateHandler>(context, listen: false).currentGarden!.id,
@@ -762,7 +743,6 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
   }
 
   void changeLights(bool newVal) {
-    //TODO: FIX THIS\
     api.userUpdateData(
         Provider.of<StateHandler>(context, listen: false).token!,
         Provider.of<StateHandler>(context, listen: false).currentGarden!.id,
@@ -770,13 +750,6 @@ class _StatsPageState extends State<StatsPage> with TickerProviderStateMixin {
     setState(() {
       lightsState = newVal;
     });
-  }
-
-  void saveGardenHistoryDataNew() {
-    api.saveGardenHistoryData(
-      Provider.of<StateHandler>(context, listen: false).token!,
-      Provider.of<StateHandler>(context, listen: false).currentGarden!.id,
-    );
   }
 
   void changeRgbStatus(bool newVal) {

@@ -14,6 +14,7 @@ class StateHandler extends ChangeNotifier {
   List<Garden> gardens = [];
   List<Schedule> schedules = [];
   List<GardenHistory> gardenHistory = [];
+  bool scheduleState = false;
 
   static Future<StateHandler> fetchToken() async {
     final handler = StateHandler();
@@ -96,6 +97,13 @@ class StateHandler extends ChangeNotifier {
 
   Future<void> updateSchedules() async {
     schedules = await api.getSchedules(token!);
+    notifyListeners();
+  }
+
+  Future<void> setScheduleState(bool value) async {
+    (await api.setScheduleState(token!, currentGarden!.schedule!.id, value))
+        as bool;
+    scheduleState = value;
     notifyListeners();
   }
 

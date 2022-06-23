@@ -16,6 +16,7 @@ class CreateGarden extends StatefulWidget {
 }
 
 class _CreateGardenState extends State<CreateGarden> {
+  bool _validateName = false;
   @override
   Widget build(BuildContext context) {
     final gardenName = TextEditingController();
@@ -42,7 +43,10 @@ class _CreateGardenState extends State<CreateGarden> {
                   top: 60.0, bottom: 8.0, left: 8.0, right: 8.0),
               child: TextField(
                 controller: gardenName,
-                decoration: const InputDecoration(hintText: 'Garden Name'),
+                decoration: InputDecoration(
+                  hintText: 'Garden Name',
+                  errorText: _validateName ? 'Value Can\'t Be Empty' : null,
+                ),
               ),
             ),
             Padding(
@@ -61,22 +65,28 @@ class _CreateGardenState extends State<CreateGarden> {
                     fontSize: 20,
                   ),
                 ),
-                //TODO: FIX EMPTY VALUE CASE
                 onPressed: () async {
-                  Garden garden = await api.createGarden(
-                      Provider.of<StateHandler>(context, listen: false).token!,
-                      gardenName.text);
-                  await Provider.of<StateHandler>(context, listen: false)
-                      .updateUser();
+                  setState(() {
+                    _validateName = gardenName.text.isEmpty;
+                  });
 
-                  if (kDebugMode) {
-                    Fluttertoast.showToast(
-                      msg: "Token: " + garden.gardenToken,
-                      toastLength: Toast.LENGTH_SHORT,
-                    );
+                  if (gardenName.text.isEmpty == false) {
+                    Garden garden = await api.createGarden(
+                        Provider.of<StateHandler>(context, listen: false)
+                            .token!,
+                        gardenName.text);
+                    await Provider.of<StateHandler>(context, listen: false)
+                        .updateUser();
+
+                    if (kDebugMode) {
+                      Fluttertoast.showToast(
+                        msg: "Token: " + garden.gardenToken,
+                        toastLength: Toast.LENGTH_SHORT,
+                      );
+                    }
+
+                    Navigator.of(context).pop();
                   }
-
-                  Navigator.of(context).pop();
                 },
               ),
             ),

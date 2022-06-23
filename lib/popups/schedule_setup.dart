@@ -2,6 +2,7 @@ import 'package:arduino_garden/config/config.dart';
 import 'package:arduino_garden/config/state_handler.dart';
 import 'package:arduino_garden/models/schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 extension TimeOfDayConverter on TimeOfDay {
@@ -25,6 +26,9 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
   final scheduleName = TextEditingController();
   final durationPump = TextEditingController();
   final durationLights = TextEditingController();
+  bool _validateName = false;
+  bool _validatePump = false;
+  bool _validateLight = false;
 
   final List<bool> _weekdaysPump = [
     true, //Mon
@@ -78,7 +82,10 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                 EdgeInsets.only(top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
             child: TextField(
               controller: scheduleName,
-              decoration: const InputDecoration(hintText: 'Schedule Name'),
+              decoration: InputDecoration(
+                hintText: 'Schedule Name',
+                errorText: _validateName ? 'Value Can\'t Be Empty' : null,
+              ),
             ),
           ),
           Expanded(
@@ -284,9 +291,18 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                             padding: EdgeInsets.only(left: 6, right: 16),
                             child: TextField(
                               controller: durationPump,
-                              keyboardType: TextInputType.number,
-                              decoration:
-                                  const InputDecoration(hintText: 'Seconds'),
+                              keyboardType: TextInputType.numberWithOptions(
+                                  signed: false, decimal: false),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^[1-9]\d*$')),
+                              ],
+                              decoration: InputDecoration(
+                                hintText: 'Minutes',
+                                errorText: _validatePump
+                                    ? 'Value Can\'t Be Empty'
+                                    : null,
+                              ),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
@@ -496,8 +512,16 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                             child: TextField(
                               controller: durationLights,
                               keyboardType: TextInputType.number,
-                              decoration:
-                                  const InputDecoration(hintText: 'Minutes'),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^[1-9]\d*$')),
+                              ],
+                              decoration: InputDecoration(
+                                hintText: 'Minutes',
+                                errorText: _validateLight
+                                    ? 'Value Can\'t Be Empty'
+                                    : null,
+                              ),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
@@ -533,41 +557,51 @@ class _ScheduleSetupState extends State<ScheduleSetup> {
                     ),
                   ),
                   onPressed: () async {
-                    Schedule schedule = await api.createSchedule(
-                        Provider.of<StateHandler>(context, listen: false)
-                            .token!,
-                        {
-                          "weekdaysPump": {
-                            "monday": _weekdaysPump[0],
-                            "tuesday": _weekdaysPump[1],
-                            "wednesday": _weekdaysPump[2],
-                            "thursday": _weekdaysPump[3],
-                            "friday": _weekdaysPump[4],
-                            "saturday": _weekdaysPump[5],
-                            "sunday": _weekdaysPump[6]
-                          },
-                          "weekdaysLight": {
-                            "monday": _weekdaysLight[0],
-                            "tuesday": _weekdaysLight[1],
-                            "wednesday": _weekdaysLight[2],
-                            "thursday": _weekdaysLight[3],
-                            "friday": _weekdaysLight[4],
-                            "saturday": _weekdaysLight[5],
-                            "sunday": _weekdaysLight[6]
-                          },
-                          "durationPump":
-                              (int.parse(durationPump.text) + 3).toString(),
-                          "durationLights": durationLights.text,
-                          "scheduleName": scheduleName.text,
-                          "timePump": timePump.to24hours(),
-                          "timeLights": timeLights.to24hours(),
-                        });
-                    await Provider.of<StateHandler>(context, listen: false)
-                        .updateSchedules();
-                    await Provider.of<StateHandler>(context, listen: false)
-                        .updateUser();
+                    setState(() {
+                      _validateName = scheduleName.text.isEmpty;
+                      _validatePump = durationPump.text.isEmpty;
+                      _validateLight = durationLights.text.isEmpty;
+                    });
 
-                    Navigator.of(context).pop();
+                    if (!(scheduleName.text.isEmpty ||
+                        durationPump.text.isEmpty ||
+                        durationLights.text.isEmpty)) {
+                      Schedule schedule = await api.createSchedule(
+                          Provider.of<StateHandler>(context, listen: false)
+                              .token!,
+                          {
+                            "weekdaysPump": {
+                              "monday": _weekdaysPump[0],
+                              "tuesday": _weekdaysPump[1],
+                              "wednesday": _weekdaysPump[2],
+                              "thursday": _weekdaysPump[3],
+                              "friday": _weekdaysPump[4],
+                              "saturday": _weekdaysPump[5],
+                              "sunday": _weekdaysPump[6]
+                            },
+                            "weekdaysLight": {
+                              "monday": _weekdaysLight[0],
+                              "tuesday": _weekdaysLight[1],
+                              "wednesday": _weekdaysLight[2],
+                              "thursday": _weekdaysLight[3],
+                              "friday": _weekdaysLight[4],
+                              "saturday": _weekdaysLight[5],
+                              "sunday": _weekdaysLight[6]
+                            },
+                            "durationPump": durationPump.text,
+                            "scheduleActive": true,
+                            "durationLights": durationLights.text,
+                            "scheduleName": scheduleName.text,
+                            "timePump": timePump.to24hours(),
+                            "timeLights": timeLights.to24hours(),
+                          });
+                      await Provider.of<StateHandler>(context, listen: false)
+                          .updateSchedules();
+                      await Provider.of<StateHandler>(context, listen: false)
+                          .updateUser();
+
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ),

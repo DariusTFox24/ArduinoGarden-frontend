@@ -8,6 +8,7 @@ part of 'schedule.dart';
 
 Schedule _$ScheduleFromJson(Map<String, dynamic> json) => Schedule(
       id: json['_id'] as String,
+      scheduleActive: json['scheduleActive'] as bool,
       timePump: json['timePump'] as String,
       timeLights: json['timeLights'] as String,
       scheduleName: json['scheduleName'] as String,
@@ -21,6 +22,7 @@ Schedule _$ScheduleFromJson(Map<String, dynamic> json) => Schedule(
 
 Map<String, dynamic> _$ScheduleToJson(Schedule instance) => <String, dynamic>{
       '_id': instance.id,
+      'scheduleActive': instance.scheduleActive,
       'timePump': instance.timePump,
       'timeLights': instance.timeLights,
       'scheduleName': instance.scheduleName,

@@ -151,6 +151,25 @@ class ArduinoGardenApi {
     return Schedule.fromJson(result['message']);
   }
 
+  Future<Schedule> setScheduleState(
+      String token, String scheduleId, bool value) async {
+    final data = await http.post(
+      uriFor('/api/schedule/setActiveSchedule/' +
+          scheduleId +
+          '/' +
+          value.toString()),
+      headers: {
+        "x-auth-token": token,
+        "Content-Type": "application/json",
+      },
+    );
+    final result = jsonDecode(data.body);
+    if (result['error']) {
+      throw Exception(result["message"]);
+    }
+    return Schedule.fromJson(result['message']);
+  }
+
   Future<void> updateGardenSchedule(
       String token, String gardenId, String scheduleId) async {
     final data = await http.get(
