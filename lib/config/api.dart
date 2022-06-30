@@ -64,6 +64,7 @@ class ArduinoGardenApi {
     if (result['error']) {
       throw Exception(result['message']);
     }
+    print(result['message']);
     return User.fromJson(result['message']);
   }
 

@@ -19,8 +19,8 @@ class _SchedulePageState extends State<SchedulePage> {
   TimeOfDay timePump = TimeOfDay(hour: 8, minute: 30);
   TimeOfDay timeLights = TimeOfDay(hour: 18, minute: 30);
   String scheduleName = "Test Schedule";
-  int durationPump = 80; //seconds
-  int durationLights = 360; //minutes
+  int durationPump = 1; //minutes
+  int durationLights = 1; //minutes
   bool isScheduleActive = true;
 
   List<bool> _weekdaysPump = [
@@ -44,48 +44,50 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     currentGarden = Provider.of<StateHandler>(context).currentGarden;
-    if (currentGarden!.schedule != null) {
-      scheduleName = currentGarden!.schedule!.scheduleName;
-      durationLights = int.parse(currentGarden!.schedule!.durationLights);
-      durationPump = int.parse(currentGarden!.schedule!.durationPump);
-      _weekdaysPump = [
-        currentGarden!.schedule!.weekdaysPump.monday,
-        currentGarden!.schedule!.weekdaysPump.tuesday,
-        currentGarden!.schedule!.weekdaysPump.wednesday,
-        currentGarden!.schedule!.weekdaysPump.thursday,
-        currentGarden!.schedule!.weekdaysPump.friday,
-        currentGarden!.schedule!.weekdaysPump.saturday,
-        currentGarden!.schedule!.weekdaysPump.sunday,
-      ];
-      _weekdaysLight = [
-        currentGarden!.schedule!.weekdaysLight.monday,
-        currentGarden!.schedule!.weekdaysLight.tuesday,
-        currentGarden!.schedule!.weekdaysLight.wednesday,
-        currentGarden!.schedule!.weekdaysLight.thursday,
-        currentGarden!.schedule!.weekdaysLight.friday,
-        currentGarden!.schedule!.weekdaysLight.saturday,
-        currentGarden!.schedule!.weekdaysLight.sunday,
-      ];
-      timePump = TimeOfDay(
-        hour: int.parse(currentGarden!.schedule!.timePump.split(":")[0]),
-        minute: int.parse(
-          currentGarden!.schedule!.timePump.split(":")[1],
-        ),
-      );
-      timeLights = TimeOfDay(
-        hour: int.parse(currentGarden!.schedule!.timeLights.split(":")[0]),
-        minute: int.parse(
-          currentGarden!.schedule!.timeLights.split(":")[1],
-        ),
-      );
+    if (currentGarden != null) {
+      if (currentGarden!.schedule != null) {
+        scheduleName = currentGarden!.schedule!.scheduleName;
+        durationLights = int.parse(currentGarden!.schedule!.durationLights);
+        durationPump = int.parse(currentGarden!.schedule!.durationPump);
+        _weekdaysPump = [
+          currentGarden!.schedule!.weekdaysPump.monday,
+          currentGarden!.schedule!.weekdaysPump.tuesday,
+          currentGarden!.schedule!.weekdaysPump.wednesday,
+          currentGarden!.schedule!.weekdaysPump.thursday,
+          currentGarden!.schedule!.weekdaysPump.friday,
+          currentGarden!.schedule!.weekdaysPump.saturday,
+          currentGarden!.schedule!.weekdaysPump.sunday,
+        ];
+        _weekdaysLight = [
+          currentGarden!.schedule!.weekdaysLight.monday,
+          currentGarden!.schedule!.weekdaysLight.tuesday,
+          currentGarden!.schedule!.weekdaysLight.wednesday,
+          currentGarden!.schedule!.weekdaysLight.thursday,
+          currentGarden!.schedule!.weekdaysLight.friday,
+          currentGarden!.schedule!.weekdaysLight.saturday,
+          currentGarden!.schedule!.weekdaysLight.sunday,
+        ];
+        timePump = TimeOfDay(
+          hour: int.parse(currentGarden!.schedule!.timePump.split(":")[0]),
+          minute: int.parse(
+            currentGarden!.schedule!.timePump.split(":")[1],
+          ),
+        );
+        timeLights = TimeOfDay(
+          hour: int.parse(currentGarden!.schedule!.timeLights.split(":")[0]),
+          minute: int.parse(
+            currentGarden!.schedule!.timeLights.split(":")[1],
+          ),
+        );
+      }
     }
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -223,7 +225,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
               ),
             ),
-            if (currentGarden!.schedule != null) ...[
+            if (currentGarden != null && currentGarden!.schedule != null) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: GridCard(

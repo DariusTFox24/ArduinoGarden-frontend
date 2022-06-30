@@ -10,14 +10,14 @@ class User {
   final String id;
   final String name;
   final String email;
-  final NotifSettings? notifications;
+  final NotifSettings? notificationSettings;
   final List<Garden>? gardens;
 
   User({
     required this.id,
     required this.name,
     required this.email,
-    this.notifications,
+    this.notificationSettings,
     this.gardens,
   });
 
@@ -27,7 +27,7 @@ class User {
 
   @override
   String toString() {
-    return 'User($id, $name, $email, $notifications, $gardens)';
+    return 'User($id, $name, $email, $notificationSettings, $gardens)';
   }
 }
 

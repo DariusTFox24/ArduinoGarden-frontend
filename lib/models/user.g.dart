@@ -10,10 +10,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       id: json['_id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      notifications: json['notifications'] == null
+      notificationSettings: json['notificationSettings'] == null
           ? null
           : NotifSettings.fromJson(
-              json['notifications'] as Map<String, dynamic>),
+              json['notificationSettings'] as Map<String, dynamic>),
       gardens: (json['gardens'] as List<dynamic>?)
           ?.map((e) => Garden.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -23,7 +23,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       '_id': instance.id,
       'name': instance.name,
       'email': instance.email,
-      'notifications': instance.notifications,
+      'notificationSettings': instance.notificationSettings,
       'gardens': instance.gardens,
     };
 
