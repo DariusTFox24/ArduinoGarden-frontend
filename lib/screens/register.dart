@@ -94,7 +94,6 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              //TODO: CONFIRM PASSWORD FIELD
               Padding(
                 padding: EdgeInsets.only(bottom: 8.0),
                 child: TextField(
@@ -125,19 +124,22 @@ class _RegisterState extends State<Register> {
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       onPressed: () async {
-                        try {
-                          final token = await api.register(
-                            nameController.text,
-                            emailController.text,
-                            passwordController.text,
-                          );
-                          await Provider.of<StateHandler>(context,
-                                  listen: false)
-                              .updateToken(token);
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              HomeScreen.path, (route) => false);
-                        } catch (e) {
-                          print(e);
+                        if (passwordController.text ==
+                            confirmPasswordController.text) {
+                          try {
+                            final token = await api.register(
+                              nameController.text,
+                              emailController.text,
+                              passwordController.text,
+                            );
+                            await Provider.of<StateHandler>(context,
+                                    listen: false)
+                                .updateToken(token);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                HomeScreen.path, (route) => false);
+                          } catch (e) {
+                            print(e);
+                          }
                         }
                       },
                     ),

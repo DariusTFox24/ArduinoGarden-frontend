@@ -151,57 +151,57 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const NotificationsSettings();
-                          });
-                    },
-                    color: Colors.pink,
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.notifications,
-                                    color: Colors.green,
-                                    size: 26,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      'Notifications',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12, bottom: 12),
-                            child: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.white,
-                              size: 34,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 16),
+                //   child: MaterialButton(
+                //     onPressed: () async {
+                //       showDialog(
+                //           context: context,
+                //           builder: (context) {
+                //             return const NotificationsSettings();
+                //           });
+                //     },
+                //     color: Colors.pink,
+                //     child: Container(
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Column(
+                //             children: [
+                //               Row(
+                //                 children: [
+                //                   Icon(
+                //                     Icons.notifications,
+                //                     color: Colors.green,
+                //                     size: 26,
+                //                   ),
+                //                   Padding(
+                //                     padding: const EdgeInsets.only(left: 8.0),
+                //                     child: Text(
+                //                       'Notifications',
+                //                       style: TextStyle(
+                //                         color: Colors.white,
+                //                         fontSize: 18,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ],
+                //           ),
+                //           Padding(
+                //             padding: const EdgeInsets.only(top: 12, bottom: 12),
+                //             child: Icon(
+                //               Icons.keyboard_arrow_right,
+                //               color: Colors.white,
+                //               size: 34,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Column(

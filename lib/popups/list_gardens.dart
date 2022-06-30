@@ -139,7 +139,6 @@ class _ListGardensState extends State<ListGardens> {
                                         context: context,
                                         builder: (context) {
                                           return LinkGarden(
-                                            //TODO: make link button reset the api token such that gardens can't be linked to multiple devices
                                             garden: Provider.of<StateHandler>(
                                                     context,
                                                     listen: false)
