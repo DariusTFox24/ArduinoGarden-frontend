@@ -16,14 +16,6 @@ class SchedulePage extends StatefulWidget {
   State<SchedulePage> createState() => _SchedulePageState();
 }
 
-extension TimeOfDayConverter on TimeOfDay {
-  String to24hours() {
-    final hour = this.hour.toString().padLeft(2, "0");
-    final min = this.minute.toString().padLeft(2, "0");
-    return "$hour:$min";
-  }
-}
-
 class _SchedulePageState extends State<SchedulePage> {
   Garden? currentGarden;
   TimeOfDay timePump = TimeOfDay(hour: 8, minute: 30);
@@ -1119,7 +1111,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                 ),
                               ),
                               Switch(
-                                value: isScheduleActive,
+                                value: Provider.of<StateHandler>(context)
+                                    .scheduleState,
                                 onChanged: (newValue) async {
                                   await api.setScheduleState(
                                       Provider.of<StateHandler>(context,
@@ -1130,9 +1123,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                   await Provider.of<StateHandler>(context,
                                           listen: false)
                                       .updateAll();
-                                  setState(() {
-                                    isScheduleActive = newValue;
-                                  });
+                                  setState(() {});
                                 },
                                 activeTrackColor: Colors.lightGreenAccent,
                                 activeColor: Colors.green,

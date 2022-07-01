@@ -180,6 +180,8 @@ class ArduinoGardenApi {
       },
     );
     final result = jsonDecode(data.body);
+    print('setActiveSchedule response:');
+    print(result['message']);
     if (result['error']) {
       throw Exception(result["message"]);
     }
