@@ -16,6 +16,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _validateEmail = false;
+  bool _validatePass = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +62,13 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(bottom: 8.0, top: 16.0),
                 child: TextField(
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFFFF8E1),
                     border: OutlineInputBorder(),
                     hintText: 'Email',
+                    errorText: _validateEmail ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -73,11 +77,13 @@ class _LoginState extends State<Login> {
                 child: TextField(
                   obscureText: true,
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFFFF8E1),
                     border: OutlineInputBorder(),
                     hintText: 'Password',
+                    errorText: _validatePass ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -101,18 +107,25 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       onPressed: () async {
-                        try {
-                          final token = await api.authenticate(
-                            emailController.text,
-                            passwordController.text,
-                          );
-                          await Provider.of<StateHandler>(context,
-                                  listen: false)
-                              .updateToken(token);
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              HomeScreen.path, (route) => false);
-                        } catch (e) {
-                          print(e);
+                        setState(() {
+                          _validateEmail = emailController.text.isEmpty;
+                          _validatePass = passwordController.text.isEmpty;
+                        });
+
+                        if (!_validateEmail && !_validatePass) {
+                          try {
+                            final token = await api.authenticate(
+                              emailController.text,
+                              passwordController.text,
+                            );
+                            await Provider.of<StateHandler>(context,
+                                    listen: false)
+                                .updateToken(token);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                HomeScreen.path, (route) => false);
+                          } catch (e) {
+                            print(e);
+                          }
                         }
                       },
                     ),

@@ -16,6 +16,14 @@ class SchedulePage extends StatefulWidget {
   State<SchedulePage> createState() => _SchedulePageState();
 }
 
+extension TimeOfDayConverter on TimeOfDay {
+  String to24hours() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = this.minute.toString().padLeft(2, "0");
+    return "$hour:$min";
+  }
+}
+
 class _SchedulePageState extends State<SchedulePage> {
   Garden? currentGarden;
   TimeOfDay timePump = TimeOfDay(hour: 8, minute: 30);
@@ -625,7 +633,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 6.0),
                                 child: Text(
-                                  "${timePump.hour}:${timePump.minute}",
+                                  "${timePump.hour.toString().padLeft(2, '0')}:${timePump.minute.toString().padLeft(2, '0')}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 20,
@@ -1043,7 +1051,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 6.0),
                                 child: Text(
-                                  "${timeLights.hour}:${timeLights.minute}",
+                                  "${timeLights.hour.toString().padLeft(2, '0')}:${timeLights.minute.toString().padLeft(2, '0')}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 20,

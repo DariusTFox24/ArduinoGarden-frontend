@@ -17,6 +17,11 @@ class _RegisterState extends State<Register> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  bool _validateConfPass = false;
+  bool _validateMatching = false;
+  bool _validateName = false;
+  bool _validatePass = false;
+  bool _validateEmail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +66,13 @@ class _RegisterState extends State<Register> {
                 padding: EdgeInsets.only(bottom: 8.0, top: 16.0),
                 child: TextField(
                   controller: nameController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFFFF8E1),
                     border: OutlineInputBorder(),
                     hintText: 'Name',
+                    errorText: _validateName ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -73,11 +80,13 @@ class _RegisterState extends State<Register> {
                 padding: EdgeInsets.only(bottom: 8.0),
                 child: TextField(
                   controller: emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFFFF8E1),
                     border: OutlineInputBorder(),
                     hintText: 'Email',
+                    errorText: _validateEmail ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -86,11 +95,13 @@ class _RegisterState extends State<Register> {
                 child: TextField(
                   obscureText: true,
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xFFFFF8E1),
                     border: OutlineInputBorder(),
                     hintText: 'Password',
+                    errorText: _validatePass ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -99,12 +110,17 @@ class _RegisterState extends State<Register> {
                 child: TextField(
                   obscureText: true,
                   controller: confirmPasswordController,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xFFFFF8E1),
-                    border: OutlineInputBorder(),
-                    hintText: 'Confirm Password',
-                  ),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFFFFF8E1),
+                      border: OutlineInputBorder(),
+                      hintText: 'Confirm Password',
+                      errorText: _validateConfPass
+                          ? 'Value Can\'t Be Empty'
+                          : _validateMatching
+                              ? 'Passwords Must Match'
+                              : null,
+                      errorStyle: TextStyle(color: Colors.white)),
                 ),
               ),
               Column(
@@ -124,8 +140,21 @@ class _RegisterState extends State<Register> {
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       onPressed: () async {
-                        if (passwordController.text ==
-                            confirmPasswordController.text) {
+                        setState(() {
+                          _validateName = nameController.text.isEmpty;
+                          _validateEmail = emailController.text.isEmpty;
+                          _validatePass = passwordController.text.isEmpty;
+                          _validateConfPass =
+                              confirmPasswordController.text.isEmpty;
+                          _validateMatching = !(passwordController.text ==
+                              confirmPasswordController.text);
+                        });
+
+                        if ((!_validateName &&
+                            !_validateEmail &&
+                            !_validatePass &&
+                            !_validateConfPass &&
+                            !_validateMatching)) {
                           try {
                             final token = await api.register(
                               nameController.text,
