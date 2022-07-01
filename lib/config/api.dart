@@ -119,6 +119,21 @@ class ArduinoGardenApi {
     return result['message'];
   }
 
+  Future<void> deleteSchedule(String token, String scheduleId) async {
+    final data = await http.delete(
+      uriFor('/api/schedule/deleteSchedule/' + scheduleId),
+      headers: {
+        "x-auth-token": token,
+        "Content-Type": "application/json",
+      },
+    );
+    final result = jsonDecode(data.body);
+    if (result['error']) {
+      throw Exception(result["message"]);
+    }
+    return result['message'];
+  }
+
   Future<List<Schedule>> getSchedules(String token) async {
     final data = await http.get(
       uriFor('/api/schedule/getSchedules'),

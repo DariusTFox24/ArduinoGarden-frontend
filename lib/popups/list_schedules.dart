@@ -79,15 +79,25 @@ class _ListSchedulesState extends State<ListSchedules> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(12.0)),
-                                    onPressed: () {
-                                      //TODO: DELETE
+                                    onPressed: () async {
+                                      await api.deleteSchedule(
+                                        Provider.of<StateHandler>(context,
+                                                listen: false)
+                                            .token!,
+                                        Provider.of<StateHandler>(context,
+                                                listen: false)
+                                            .schedules[index]
+                                            .id,
+                                      );
+                                      Provider.of<StateHandler>(context,
+                                              listen: false)
+                                          .updateAll();
+                                      Navigator.of(context).pop();
                                     },
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    child: Text('Delete',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        )),
                                     color: Colors.pink,
                                   ),
                                 ),

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../config/config.dart';
+
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
 
@@ -21,7 +23,7 @@ class _SchedulePageState extends State<SchedulePage> {
   String scheduleName = "Test Schedule";
   int durationPump = 1; //minutes
   int durationLights = 1; //minutes
-  bool isScheduleActive = true;
+  bool isScheduleActive = false;
 
   List<bool> _weekdaysPump = [
     true, //Mon
@@ -85,6 +87,7 @@ class _SchedulePageState extends State<SchedulePage> {
             currentGarden!.schedule!.timeLights.split(":")[1],
           ),
         );
+        isScheduleActive = currentGarden!.schedule!.scheduleActive;
       }
     }
 
@@ -1109,9 +1112,18 @@ class _SchedulePageState extends State<SchedulePage> {
                               ),
                               Switch(
                                 value: isScheduleActive,
-                                onChanged: (value) {
+                                onChanged: (newValue) async {
+                                  await api.setScheduleState(
+                                      Provider.of<StateHandler>(context,
+                                              listen: false)
+                                          .token!,
+                                      currentGarden!.schedule!.id,
+                                      newValue);
+                                  await Provider.of<StateHandler>(context,
+                                          listen: false)
+                                      .updateAll();
                                   setState(() {
-                                    isScheduleActive = value;
+                                    isScheduleActive = newValue;
                                   });
                                 },
                                 activeTrackColor: Colors.lightGreenAccent,
