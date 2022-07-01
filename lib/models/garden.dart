@@ -17,7 +17,7 @@ class Garden {
   final int lightIntensity;
   final double solarVoltage;
   final double batteryVoltage;
-  final Schedule? schedule;
+  late final Schedule? schedule;
   final String gardenToken;
   final DateTime lastOnline;
   final DateTime? lastSaved;

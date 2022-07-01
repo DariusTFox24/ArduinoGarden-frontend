@@ -89,10 +89,11 @@ class _ListSchedulesState extends State<ListSchedules> {
                                             .schedules[index]
                                             .id,
                                       );
-                                      Provider.of<StateHandler>(context,
+
+                                      await Provider.of<StateHandler>(context,
                                               listen: false)
                                           .updateAll();
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop(true);
                                     },
                                     child: Text('Delete',
                                         style: TextStyle(
