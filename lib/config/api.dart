@@ -169,6 +169,8 @@ class ArduinoGardenApi {
 
   Future<Schedule> setScheduleState(
       String token, String scheduleId, bool value) async {
+    print('setActiveSchedule sent bool value:' + value.toString());
+    print('setActiveSchedule sent schedule id :' + scheduleId);
     final data = await http.post(
       uriFor('/api/schedule/setActiveSchedule/' +
           scheduleId +
@@ -180,8 +182,8 @@ class ArduinoGardenApi {
       },
     );
     final result = jsonDecode(data.body);
-    print('setActiveSchedule response:');
-    print(result['message']);
+    print('setActiveSchedule response:' + result['message'].toString());
+
     if (result['error']) {
       throw Exception(result["message"]);
     }

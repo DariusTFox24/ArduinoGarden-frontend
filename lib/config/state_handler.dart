@@ -101,11 +101,16 @@ class StateHandler extends ChangeNotifier {
   }
 
   Future<void> setScheduleState(bool value) async {
-    Schedule scheduleTemp = (await api.setScheduleState(
-        token!, currentGarden!.schedule!.id, value));
-    scheduleState = scheduleTemp.scheduleActive;
-    print('Schedule State set to:');
-    print(scheduleState);
+    print('Current Schedule Id was at set: ');
+    print(currentGarden!.schedule!.id);
+    print('Value to be set at:');
+    print(value);
+    Schedule scheduleTemp = (await api
+        .setScheduleState(token!, currentGarden!.schedule!.id, value)
+        .whenComplete(() async => {
+              await updateAll(),
+            }));
+
     notifyListeners();
   }
 

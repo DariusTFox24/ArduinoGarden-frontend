@@ -23,7 +23,7 @@ class _SchedulePageState extends State<SchedulePage> {
   String scheduleName = "Test Schedule";
   int durationPump = 1; //minutes
   int durationLights = 1; //minutes
-  bool isScheduleActive = false;
+  bool scheduleActive = false;
 
   List<bool> _weekdaysPump = [
     true, //Mon
@@ -54,6 +54,7 @@ class _SchedulePageState extends State<SchedulePage> {
     currentGarden = Provider.of<StateHandler>(context).currentGarden;
     if (currentGarden != null) {
       if (currentGarden!.schedule != null) {
+        scheduleActive = currentGarden!.schedule!.scheduleActive;
         scheduleName = currentGarden!.schedule!.scheduleName;
         durationLights = int.parse(currentGarden!.schedule!.durationLights);
         durationPump = int.parse(currentGarden!.schedule!.durationPump);
@@ -87,7 +88,6 @@ class _SchedulePageState extends State<SchedulePage> {
             currentGarden!.schedule!.timeLights.split(":")[1],
           ),
         );
-        isScheduleActive = currentGarden!.schedule!.scheduleActive;
       }
     }
 
@@ -235,7 +235,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   child: Stack(
                     alignment: AlignmentDirectional.center,
                     children: [
-                      if (!isScheduleActive) ...{
+                      if (!scheduleActive) ...{
                         Icon(
                           FontAwesomeIcons.powerOff,
                           size: 186,
@@ -1111,19 +1111,24 @@ class _SchedulePageState extends State<SchedulePage> {
                                 ),
                               ),
                               Switch(
-                                value: Provider.of<StateHandler>(context)
-                                    .scheduleState,
-                                onChanged: (newValue) async {
-                                  await api.setScheduleState(
-                                      Provider.of<StateHandler>(context,
-                                              listen: false)
-                                          .token!,
-                                      currentGarden!.schedule!.id,
-                                      newValue);
-                                  await Provider.of<StateHandler>(context,
-                                          listen: false)
-                                      .updateAll();
-                                  setState(() {});
+                                value: scheduleActive,
+                                onChanged: (value) async {
+                                  await api
+                                      .setScheduleState(
+                                          Provider.of<StateHandler>(context,
+                                                  listen: false)
+                                              .token!,
+                                          currentGarden!.schedule!.id,
+                                          value)
+                                      .whenComplete(() async => {
+                                            await Provider.of<StateHandler>(
+                                                    context,
+                                                    listen: false)
+                                                .updateAll()
+                                                .whenComplete(() => {
+                                                      setState(() {}),
+                                                    }),
+                                          });
                                 },
                                 activeTrackColor: Colors.lightGreenAccent,
                                 activeColor: Colors.green,
